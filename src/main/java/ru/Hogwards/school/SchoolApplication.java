@@ -3,6 +3,7 @@ package ru.Hogwards.school;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@OpenAPIDefinition
 @SpringBootApplication
 public class SchoolApplication {
 
