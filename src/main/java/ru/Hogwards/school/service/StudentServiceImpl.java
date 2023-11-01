@@ -1,14 +1,13 @@
 package ru.Hogwards.school.service;
 
 import org.springframework.stereotype.Service;
-import ru.Hogwards.school.Exception.StudentAlreadyExistsException;
-import ru.Hogwards.school.Exception.StudentNotFoundException;
+import ru.Hogwards.school.Exception.AlreadyExistsException;
+import ru.Hogwards.school.Exception.NotFoundException;
 import ru.Hogwards.school.model.Student;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -19,7 +18,7 @@ public class StudentServiceImpl implements StudentService {
 @Override
     public Student create(Student student) {
         if (repository.containsValue(student)) {
-            throw new StudentAlreadyExistsException
+            throw new AlreadyExistsException
                     ("Студент " + student + " уже есть в списке");
         }
 
@@ -33,7 +32,7 @@ public class StudentServiceImpl implements StudentService {
         Student student = repository.get(id);
 
         if (student == null) {
-            throw new StudentNotFoundException
+            throw new NotFoundException
                     ("Студент с id " + student + " не найдено в списке");
         }
         return student;
@@ -41,7 +40,7 @@ public class StudentServiceImpl implements StudentService {
 @Override
     public Student update(Student student) {
         if (!repository.containsKey(student.getId())) {
-            throw new StudentNotFoundException
+            throw new NotFoundException
                     ("Студент с id " + student + " не найдено в списке");
         }
         return repository.put(student.getId(), student);
@@ -50,7 +49,7 @@ public class StudentServiceImpl implements StudentService {
     public Student delete(long id) {
         Student student = repository.remove(id);
         if (student == null) {
-            throw new StudentNotFoundException
+            throw new NotFoundException
                     ("Студент с id " + student + " не найдено в списке");
         }
         return student;
