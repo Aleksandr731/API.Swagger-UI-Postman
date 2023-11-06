@@ -1,12 +1,22 @@
 package ru.Hogwards.school.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jdk.jfr.Enabled;
+
 import java.util.Objects;
-
+@Entity
 public class Student {
-
+    @Id
+    @GeneratedValue
     private Long id;
     private String Name;
     private int age;
+
+    public Student() {
+
+    }
 
     public Student(Long id, String name, int age) {
         this.id = id;
