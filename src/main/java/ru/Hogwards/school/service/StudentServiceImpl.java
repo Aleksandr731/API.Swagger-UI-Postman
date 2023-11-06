@@ -1,8 +1,8 @@
 package ru.Hogwards.school.service;
 
 import org.springframework.stereotype.Service;
-import ru.Hogwards.school.Exception.AlreadyExistsException;
 import ru.Hogwards.school.Exception.NotFoundException;
+import ru.Hogwards.school.model.Faculty;
 import ru.Hogwards.school.model.Student;
 import ru.Hogwards.school.repository.StudentRepository;
 
@@ -43,5 +43,17 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> readByAge(int age) {
         return repository.findAllByAge(age);
+    }
+    @Override
+    public Collection<Student> readByAgeBetween(int minAge, int maxAge) {
+        return repository.findByAgeBetween(minAge, maxAge);
+    }
+
+    public Faculty readStudentFaculty(long studentId) {
+        return read(studentId).getFaculty();
+    }
+
+    public Collection<Student> readByFacultyId(long facultyId) {
+        return repository.findByFaculty_id(facultyId);
     }
 }
