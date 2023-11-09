@@ -1,12 +1,13 @@
 package ru.Hogwards.school.service;
 
+import org.springframework.stereotype.Service;
 import ru.Hogwards.school.Exception.AlreadyExistsException;
 import ru.Hogwards.school.Exception.NotFoundException;
 import ru.Hogwards.school.model.Faculty;
 import ru.Hogwards.school.repository.FacultyRepository;
 
 import java.util.Collection;
-
+@Service
 public class FacultyServiceImpl implements FacultyService {
 
     private final FacultyRepository repository;
