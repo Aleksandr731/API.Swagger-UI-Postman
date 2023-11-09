@@ -1,14 +1,28 @@
 package ru.Hogwards.school.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.Collection;
 import java.util.Objects;
 
+@Entity
 public class Faculty {
-
+    @Id
+    @GeneratedValue
     private Long id;
 
     private String name;
 
     private String color;
+
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> students;
+
+    public Faculty() {
+    }
 
     public Faculty(Long id, String name, String color) {
         this.id = id;

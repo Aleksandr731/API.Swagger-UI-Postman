@@ -1,62 +1,46 @@
 package ru.Hogwards.school.service;
 
+import org.springframework.stereotype.Service;
 import ru.Hogwards.school.Exception.AlreadyExistsException;
 import ru.Hogwards.school.Exception.NotFoundException;
 import ru.Hogwards.school.model.Faculty;
+import ru.Hogwards.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+@Service
 public class FacultyServiceImpl implements FacultyService {
 
-    private final Map<Long, Faculty> repository = new HashMap<>();
+    private final FacultyRepository repository;
 
-    private Long idCounter = 0L;
+    public FacultyServiceImpl(FacultyRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public Faculty create(Faculty faculty) {
-        if (repository.containsValue(faculty)) {
-            throw new AlreadyExistsException
-                    ("Факультет " + faculty + " уже есть в списке");
+        return repository.save(faculty);
         }
-
-        long id = ++idCounter;
-        faculty.setId(id);
-
-        return repository.put(id, faculty);
-    }
     @Override
     public Faculty read(long id) {
-        Faculty faculty = repository.get(id);
+        return repository.findById(id)
+                .orElseThrow(() -> new NotFoundException
+                        ("Факультета с id " + id + " не найдено в списке"));
 
-        if (faculty == null) {
-            throw new NotFoundException
-                    ("Факультета с id " + faculty + " не найдено в списке");
-        }
-        return faculty;
     }
     @Override
     public Faculty update(Faculty faculty) {
-        if (!repository.containsKey(faculty.getId())) {
-            throw new NotFoundException
-                    ("Факультета с id " + faculty + " не найдено в списке");
-        }
-        return repository.put(faculty.getId(), faculty);
+        read(faculty.getId());
+        return repository.save(faculty);
     }
     @Override
     public Faculty delete(long id) {
-        Faculty faculty = repository.remove(id);
-        if (faculty == null) {
-            throw new NotFoundException
-                    ("Факультета с id " + faculty + " не найдено в списке");
-        }
-        return faculty;
+        Faculty faculty = read(id);
+        repository.delete(faculty);
+        return  faculty;
     }
 
     @Override
     public Collection<Faculty> readByAge(String color) {
-        return repository.values().stream()
-                .filter(s -> s.getColor() == color)
-                .toList();
+        return repository.findAllByColor(color);
     }
 }
